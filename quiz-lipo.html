@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Você está pronta para uma lipoescultura?</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F5F2EE;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap');
+
+  .container {
+    width: 100%;
+    max-width: 580px;
+  }
+
+  .clinic-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .clinic-name {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 15px;
+    letter-spacing: 0.15em;
+    color: #B5935A;
+    text-transform: uppercase;
+  }
+
+  .progress-bar-bg {
+    background: #E8E4DE;
+    border-radius: 99px;
+    height: 3px;
+    margin-bottom: 2.5rem;
+  }
+
+  .progress-bar-fill {
+    background: #B5935A;
+    height: 3px;
+    border-radius: 99px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .step-label {
+    font-size: 11px;
+    color: #B5935A;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+
+  .question {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1C1C1C;
+    line-height: 1.4;
+    margin-bottom: 2rem;
+  }
+
+  .intro-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1C1C1C;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .intro-sub {
+    font-size: 14px;
+    color: #6B6B6B;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .intro-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .tag {
+    background: #fff;
+    border: 0.5px solid #D9D5CF;
+    border-radius: 99px;
+    font-size: 12px;
+    color: #8A8580;
+    padding: 5px 14px;
+    font-weight: 400;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opt-btn {
+    background: #fff;
+    border: 0.5px solid #D9D5CF;
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    color: #1C1C1C;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .opt-btn:hover {
+    border-color: #B5935A;
+    background: #FDFBF8;
+  }
+
+  .opt-btn.selected {
+    border: 1.5px solid #B5935A;
+    background: #FDFBF8;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  .btn-back {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #8A8580;
+    cursor: pointer;
+    padding: 8px 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+  }
+
+  .btn-back:hover { color: #1C1C1C; }
+
+  .btn-next {
+    background: #1C1C1C;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 32px;
+    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    opacity: 0.35;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-next.ready {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .btn-start {
+    background: #1C1C1C;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 32px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-start:hover { background: #333; }
+
+  .result-card {
+    background: #fff;
+    border: 0.5px solid #D9D5CF;
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .result-badge {
+    display: inline-block;
+    background: #F5F2EE;
+    color: #B5935A;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 14px;
+    border-radius: 99px;
+    margin-bottom: 1.25rem;
+    border: 0.5px solid #B5935A;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .result-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1C1C1C;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .result-desc {
+    font-size: 13px;
+    color: #6B6B6B;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+
+  .result-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .result-items li {
+    font-size: 13px;
+    color: #1C1C1C;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .result-items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #B5935A;
+  }
+
+  .cta-block {
+    background: #1C1C1C;
+    border-radius: 12px;
+    padding: 1.75rem;
+    text-align: center;
+  }
+
+  .cta-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .cta-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .cta-btn {
+    display: block;
+    background: #B5935A;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 24px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+
+  .cta-btn:hover { background: #a07d48; }
+
+  .disclaimer {
+    font-size: 11px;
+    color: #A09A93;
+    text-align: center;
+    margin-top: 1rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: #E8E4DE;
+    margin: 1.5rem 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="clinic-header">
+    <p class="clinic-name">Sua Clínica · Brasília</p>
+  </div>
+
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress"></div>
+  </div>
+
+  <div class="step active" id="step-intro">
+    <p class="intro-title">Você está pronta para uma lipoescultura?</p>
+    <p class="intro-sub">Responda 6 perguntas rápidas e descubra qual é o seu momento ideal — e quais são os próximos passos certos para o seu caso.</p>
+    <div class="intro-tags">
+      <span class="tag">2 minutos</span>
+      <span class="tag">6 perguntas</span>
+      <span class="tag">resultado personalizado</span>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Começar avaliação</button>
+  </div>
+
+  <div class="step" id="step-1">
+    <p class="step-label">Pergunta 1 de 6</p>
+    <p class="question">Como você descreveria sua relação com o peso hoje?</p>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOption(this, 1, 3)">Estou no peso ideal ou próxima dele, mas tenho áreas que o exercício não resolve</button>
+      <button class="opt-btn" onclick="selectOption(this, 1, 2)">Estou acima do peso, mas já estou trabalhando nisso ativamente</button>
+      <button class="opt-btn" onclick="selectOption(this, 1, 1)">Estou acima do peso e ainda não iniciei mudanças de hábito</button>
+      <button class="opt-btn" onclick="selectOption(this, 1, 2)">Já tive variações grandes de peso, mas me estabilizei</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="goBack(1)">← Voltar</button>
+      <button class="btn-next" id="next-1" onclick="goNext(1)">Próxima →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-2">
+    <p class="step-label">Pergunta 2 de 6</p>
+    <p class="question">Qual região do corpo mais te incomoda?</p>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOption(this, 2, 3)">Abdômen e flancos (aquela gordura que teima em ficar)</button>
+      <button class="opt-btn" onclick="selectOption(this, 2, 3)">Coxas internas e externas</button>
+      <button class="opt-btn" onclick="selectOption(this, 2, 2)">Costas e região do sutiã</button>
+      <button class="opt-btn" onclick="selectOption(this, 2, 3)">Mais de uma região — quero um resultado mais amplo</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="goBack(2)">← Voltar</button>
+      <button class="btn-next" id="next-2" onclick="goNext(2)">Próxima →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-3">
+    <p class="step-label">Pergunta 3 de 6</p>
+    <p class="question">Como está sua saúde geral hoje?</p>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOption(this, 3, 3)">Saudável, sem condições crônicas ou uso contínuo de medicamentos</button>
+      <button class="opt-btn" onclick="selectOption(this, 3, 2)">Tenho alguma condição controlada (pressão, tireoide, etc.)</button>
+      <button class="opt-btn" onclick="selectOption(this, 3, 1)">Estou em investigação ou tratamento médico no momento</button>
+      <button class="opt-btn" onclick="selectOption(this, 3, 2)">Tenho histórico de cirurgias anteriores na região de interesse</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="goBack(3)">← Voltar</button>
+      <button class="btn-next" id="next-3" onclick="goNext(3)">Próxima →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-4">
+    <p class="step-label">Pergunta 4 de 6</p>
+    <p class="question">O que você espera com a lipoescultura?</p>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOption(this, 4, 3)">Um resultado natural, proporcional — quero melhorar, não transformar</button>
+      <button class="opt-btn" onclick="selectOption(this, 4, 2)">Quero uma mudança visível, mas dentro do que é seguro e estético</button>
+      <button class="opt-btn" onclick="selectOption(this, 4, 1)">Quero a maior transformação possível em uma só cirurgia</button>
+      <button class="opt-btn" onclick="selectOption(this, 4, 3)">Ainda estou definindo — quero a opinião de um especialista</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="goBack(4)">← Voltar</button>
+      <button class="btn-next" id="next-4" onclick="goNext(4)">Próxima →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-5">
+    <p class="step-label">Pergunta 5 de 6</p>
+    <p class="question">Você tem disponibilidade para o período de recuperação?</p>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOption(this, 5, 3)">Sim, consigo me afastar do trabalho por 7 a 14 dias se necessário</button>
+      <button class="opt-btn" onclick="selectOption(this, 5, 2)">Tenho flexibilidade parcial — consigo alguns dias, mas não uma semana completa</button>
+      <button class="opt-btn" onclick="selectOption(this, 5, 1)">No momento não consigo me afastar, mas estou planejando para os próximos meses</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="goBack(5)">← Voltar</button>
+      <button class="btn-next" id="next-5" onclick="goNext(5)">Próxima →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-6">
+    <p class="step-label">Pergunta 6 de 6</p>
+    <p class="question">Em que momento você se encontra na jornada de decisão?</p>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOption(this, 6, 3)">Já decidi que quero fazer — preciso encontrar o cirurgião certo</button>
+      <button class="opt-btn" onclick="selectOption(this, 6, 2)">Estou pesquisando com seriedade e quase pronta para marcar uma consulta</button>
+      <button class="opt-btn" onclick="selectOption(this, 6, 2)">Tenho interesse real, mas ainda tenho dúvidas para resolver antes</button>
+      <button class="opt-btn" onclick="selectOption(this, 6, 1)">Ainda estou no início, apenas conhecendo as possibilidades</button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="goBack(6)">← Voltar</button>
+      <button class="btn-next" id="next-6" onclick="showResult()">Ver meu resultado →</button>
+    </div>
+  </div>
+
+  <div class="step" id="step-result"></div>
+
+</div>
+
+<script>
+var scores = {};
+var totalSteps = 6;
+
+function startQuiz() {
+  document.getElementById('step-intro').classList.remove('active');
+  document.getElementById('step-1').classList.add('active');
+  updateProgress(1);
+}
+
+function selectOption(btn, step, score) {
+  var opts = btn.parentElement.querySelectorAll('.opt-btn');
+  opts.forEach(function(o) { o.classList.remove('selected'); });
+  btn.classList.add('selected');
+  scores[step] = score;
+  var nextBtn = document.getElementById('next-' + step);
+  if (nextBtn) { nextBtn.classList.add('ready'); }
+}
+
+function goNext(step) {
+  if (!scores[step]) return;
+  document.getElementById('step-' + step).classList.remove('active');
+  document.getElementById('step-' + (step + 1)).classList.add('active');
+  updateProgress(step + 1);
+  window.scrollTo(0, 0);
+}
+
+function goBack(step) {
+  document.getElementById('step-' + step).classList.remove('active');
+  if (step === 1) {
+    document.getElementById('step-intro').classList.add('active');
+    updateProgress(0);
+  } else {
+    document.getElementById('step-' + (step - 1)).classList.add('active');
+    updateProgress(step - 1);
+  }
+  window.scrollTo(0, 0);
+}
+
+function updateProgress(step) {
+  var pct = step === 0 ? 0 : Math.round((step / totalSteps) * 100);
+  document.getElementById('progress').style.width = pct + '%';
+}
+
+function getTotal() {
+  var t = 0;
+  for (var k in scores) { t += scores[k]; }
+  return t;
+}
+
+function showResult() {
+  if (!scores[6]) return;
+  var total = getTotal();
+  var result;
+
+  if (total >= 15) {
+    result = {
+      badge: 'Pronta para o próximo passo',
+      title: 'Tudo indica que você está no momento certo para uma consulta.',
+      desc: 'Seu perfil reúne os principais fatores que tornam a lipoescultura um caminho seguro e com alto potencial de resultado: peso estável, saúde controlada, expectativas realistas e disponibilidade para a recuperação.',
+      items: [
+        'Você já está no perfil ideal de candidata',
+        'O resultado tende a ser duradouro no seu caso',
+        'A consulta vai confirmar quais regiões respondem melhor',
+        'Sua equipe pode te orientar sobre cronograma e preparo'
+      ]
+    };
+  } else if (total >= 10) {
+    result = {
+      badge: 'Quase pronta — alguns pontos a alinhar',
+      title: 'Você está no caminho certo, mas há alguns detalhes que vale conversar antes.',
+      desc: 'Seu interesse é legítimo e seu perfil tem boas condições. Existem alguns pontos — como peso, saúde ou disponibilidade — que podem influenciar o timing ideal da cirurgia. Uma consulta vai esclarecer tudo.',
+      items: [
+        'Uma avaliação presencial vai definir o momento certo',
+        'Pequenos ajustes podem maximizar seu resultado',
+        'Não há pressa — planejar bem é parte do processo',
+        'Tirar dúvidas antes de decidir é o caminho mais seguro'
+      ]
+    };
+  } else {
+    result = {
+      badge: 'Momento de preparação',
+      title: 'Agora é hora de se preparar bem para chegar no momento certo.',
+      desc: 'Pelo que você respondeu, existem alguns fatores — como peso, saúde atual ou disponibilidade de recuperação — que indicam que o melhor resultado virá com um pouco mais de preparação. Isso não é um impedimento, é sabedoria.',
+      items: [
+        'Uma consulta pode traçar um plano de preparação para você',
+        'Estabilizar o peso antes aumenta muito a durabilidade do resultado',
+        'Resolver questões de saúde antes é parte do cuidado',
+        'Muitas pacientes chegam aqui nessa fase e saem com um plano claro'
+      ]
+    };
+  }
+
+  var html = '<div class="result-card">';
+  html += '<span class="result-badge">' + result.badge + '</span>';
+  html += '<p class="result-title">' + result.title + '</p>';
+  html += '<p class="result-desc">' + result.desc + '</p>';
+  html += '<div class="divider"></div>';
+  html += '<ul class="result-items">';
+  result.items.forEach(function(item) { html += '<li>' + item + '</li>'; });
+  html += '</ul></div>';
+  html += '<div class="cta-block">';
+  html += '<p class="cta-title">Quer entender o que faz sentido para o seu caso?</p>';
+  html += '<p class="cta-sub">Nossa equipe pode te orientar com calma, sem compromisso. A conversa é o primeiro passo.</p>';
+  html += '<button class="cta-btn" onclick="openWhatsapp()">Falar com a equipe no WhatsApp</button>';
+  html += '</div>';
+  html += '<p class="disclaimer">Este quiz é orientativo e não substitui uma avaliação médica presencial.</p>';
+
+  document.getElementById('step-result').innerHTML = html;
+  document.getElementById('step-6').classList.remove('active');
+  document.getElementById('step-result').classList.add('active');
+  document.getElementById('progress').style.width = '100%';
+  window.scrollTo(0, 0);
+}
+
+function openWhatsapp() {
+  var msg = encodeURIComponent('Olá! Fiz o quiz e gostaria de saber mais sobre lipoescultura na clínica.');
+  window.open('https://wa.me/55SEUNUMERO?text=' + msg, '_blank');
+}
+</script>
+</body>
+</html>
